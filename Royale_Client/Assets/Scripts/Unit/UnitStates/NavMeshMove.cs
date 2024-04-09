@@ -1,4 +1,3 @@
-using System.ComponentModel;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -6,7 +5,6 @@ using UnityEngine.AI;
 public class NavMeshMove : UnitState
 {
     private NavMeshAgent _agent;
-    private Vector3 _targetPosition;
     private bool _targetIsEnemy;
     private Tower _nearestTower;
 
@@ -17,7 +15,7 @@ public class NavMeshMove : UnitState
         _targetIsEnemy = !_unit.IsEnemy;
 
         _agent = _unit.GetComponent<NavMeshAgent>();
-        if (!_agent) Debug.LogError($"There is no {_agent} found on the character {_unit.name}");
+        if (!_agent) Debug.LogError($"There is no NavMeshAgent found on the character {_unit.name}");
 
         _agent.speed = _unit.Parameters.Speed;
         _agent.radius = _unit.Parameters.ModelRadius;
@@ -28,29 +26,45 @@ public class NavMeshMove : UnitState
     {
         Vector3 unitPosition = _unit.transform.position;
         _nearestTower = MapInfo.Instance.GetNearestTower(in unitPosition, _targetIsEnemy);
-        _targetPosition = _nearestTower.transform.position;
 
-        _agent.SetDestination(_targetPosition);
+        _agent.SetDestination(_nearestTower.transform.position);
     }
 
     public override void Run()
     {
-        TryAttackTower();
+        if (TryAttackTower()) return;
+        if (TryAttackUnit()) return;
     }
 
-    private void TryAttackTower()
+    private bool TryAttackTower()
     {
         float distaneToTarget = _nearestTower.GetDistance(_unit.transform.position);
 
         if (distaneToTarget <= _unit.Parameters.StartAttackDistance)
         {
-            Debug.Log("Destination Achieved");
             _unit.SetState(UnitStateType.ATTACK);
+            return true;
         }
+
+        return false;
+    }
+
+    private bool TryAttackUnit()
+    {
+        bool hasEnemy = MapInfo.Instance.TryGetNearestUnit(_unit.transform.position,  _targetIsEnemy, out Unit enemy, out float distance);
+        if (!hasEnemy) return false;
+
+        if (_unit.Parameters.StartChaseDistance >= distance)
+        {
+            _unit.SetState(UnitStateType.CHASE);
+            return true;
+        }
+
+        return false;
     }
 
     public override void Finish()
     {
-        _agent.isStopped = true;
+        _agent.SetDestination(_unit.transform.position);
     }
 }

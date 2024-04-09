@@ -26,22 +26,39 @@ public class MapInfo : MonoBehaviour
     [SerializeField] private List<Tower> _enemyTowers = new List<Tower>();
     [SerializeField] private List<Tower> _playerTowers = new List<Tower>();
 
+    [SerializeField] private List<Unit> _enemyUnits = new List<Unit>();
+    [SerializeField] private List<Unit> _playerUnits = new List<Unit>();
+
+    public bool TryGetNearestUnit(in Vector3 currentPosition, bool enemy, out Unit unit, out float distance)
+    {
+        List<Unit> units = enemy ? _enemyUnits : _playerUnits;
+        unit = GetNearest(currentPosition, units, out distance);
+        return unit;
+    }
+
     public Tower GetNearestTower(in Vector3 currentPosition, bool enemy)
     {
         List<Tower> towers = enemy ? _enemyTowers : _playerTowers;
+        return GetNearest(currentPosition, towers, out float distance);
+    }
 
-        Tower nearestTower = towers[0];
-        float distance = Vector3.Distance(currentPosition, towers[0].transform.position);
+    private T GetNearest<T>(in Vector3 currentPosition, List<T> objects, out float distance) where T : MonoBehaviour
+    {
+        distance = float.MaxValue;
+        if (objects.Count <= 0) return null;
 
-        for (int i = 1; i < towers.Count; i++)
+        distance = Vector3.Distance(currentPosition, objects[0].transform.position);
+        T nearest = objects[0];
+
+        for (int i = 0; i < objects.Count; i++)
         {
-            float tempDistance = Vector3.Distance(currentPosition, towers[i].transform.position);
+            float tempDistance = Vector3.Distance(currentPosition, objects[i].transform.position);
             if (tempDistance > distance) continue;
 
-            nearestTower = towers[i];
-            distance = tempDistance;                                                                                                        
+            nearest = objects[i];
+            distance = tempDistance;
         }
 
-        return nearestTower;
+        return nearest;
     }
 }

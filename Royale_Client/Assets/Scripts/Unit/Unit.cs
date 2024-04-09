@@ -1,10 +1,11 @@
 using UnityEngine;
 
-[RequireComponent(typeof(UnitParameters))]
-public class Unit : MonoBehaviour
+[RequireComponent(typeof(UnitParameters), typeof(Health))]
+public class Unit : MonoBehaviour, IHealth
 {
+    [field: SerializeField] public Health Health { get; private set; }
     [field: SerializeField] public bool IsEnemy { get; private set; } = false;
-    [field: SerializeField] public UnitParameters Parameters;               
+    [field: SerializeField] public UnitParameters Parameters;
     [SerializeField] private UnitState _defaultStateSO;
     [SerializeField] private UnitState _chaseStateSO;
     [SerializeField] private UnitState _attackStateSO;
@@ -47,7 +48,7 @@ public class Unit : MonoBehaviour
                 _currentState = _chaseState;
                 break;
             case UnitStateType.ATTACK:
-                _currentState = _chaseState;
+                _currentState = _attackState;
                 break;
             default:
                 Debug.LogError($"The state {type} is not processed");
@@ -56,4 +57,14 @@ public class Unit : MonoBehaviour
 
         _currentState.Init();
     }
+
+#if UNITY_EDITOR
+    [Space(24)]
+    [SerializeField] private bool _debug = false;
+    private void OnDrawGizmos()
+    {
+        if (!_debug) return;
+        if (_chaseStateSO) _chaseStateSO.DebugDrawDistance(this);
+    }
+#endif
 }
