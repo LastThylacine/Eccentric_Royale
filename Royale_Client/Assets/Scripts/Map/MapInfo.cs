@@ -23,25 +23,25 @@ public class MapInfo : MonoBehaviour
     }
     #endregion
 
-    [SerializeField] private List<Transform> _enemyTowers = new List<Transform>();
-    [SerializeField] private List<Transform> _playerTowers = new List<Transform>();
+    [SerializeField] private List<Tower> _enemyTowers = new List<Tower>();
+    [SerializeField] private List<Tower> _playerTowers = new List<Tower>();
 
-    public Vector3 GetNearestTowerPosition(in Vector3 currentPosition, bool enemy)
+    public Tower GetNearestTower(in Vector3 currentPosition, bool enemy)
     {
-        List<Transform> towers = enemy ? _enemyTowers : _playerTowers;
+        List<Tower> towers = enemy ? _enemyTowers : _playerTowers;
 
-        Vector3 nearestTowerPosition = towers[0].position;
-        float distance = Vector3.Distance(currentPosition, towers[0].position);
+        Tower nearestTower = towers[0];
+        float distance = Vector3.Distance(currentPosition, towers[0].transform.position);
 
         for (int i = 1; i < towers.Count; i++)
         {
-            float tempDistance = Vector3.Distance(currentPosition, towers[i].position);
+            float tempDistance = Vector3.Distance(currentPosition, towers[i].transform.position);
             if (tempDistance > distance) continue;
 
-            nearestTowerPosition = towers[i].position;
+            nearestTower = towers[i];
             distance = tempDistance;                                                                                                        
         }
 
-        return nearestTowerPosition;
+        return nearestTower;
     }
 }
