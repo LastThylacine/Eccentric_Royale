@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 [RequireComponent(typeof(UnitParameters), typeof(Health))]
@@ -65,6 +66,12 @@ public class Unit : MonoBehaviour, IHealth
     {
         if (!_debug) return;
         if (_chaseStateSO) _chaseStateSO.DebugDrawDistance(this);
+    }
+
+    public void Destroy()
+    {
+        MapInfo.Instance.RemoveUnit(this, IsEnemy);
+        Destroy(gameObject);
     }
 #endif
 }

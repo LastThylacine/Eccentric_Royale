@@ -27,7 +27,7 @@ public class NavMeshMove : UnitState
         Vector3 unitPosition = _unit.transform.position;
         _nearestTower = MapInfo.Instance.GetNearestTower(in unitPosition, _targetIsEnemy);
 
-        _agent.SetDestination(_nearestTower.transform.position);
+        if (_nearestTower) _agent.SetDestination(_nearestTower.transform.position);
     }
 
     public override void Run()
@@ -38,6 +38,8 @@ public class NavMeshMove : UnitState
 
     private bool TryAttackTower()
     {
+        if (!_nearestTower) return false;
+
         float distaneToTarget = _nearestTower.GetDistance(_unit.transform.position);
 
         if (distaneToTarget <= _unit.Parameters.StartAttackDistance)
@@ -51,7 +53,7 @@ public class NavMeshMove : UnitState
 
     private bool TryAttackUnit()
     {
-        bool hasEnemy = MapInfo.Instance.TryGetNearestUnit(_unit.transform.position,  _targetIsEnemy, out Unit enemy, out float distance);
+        bool hasEnemy = MapInfo.Instance.TryGetNearestUnit(_unit.transform.position, _targetIsEnemy, out Unit enemy, out float distance);
         if (!hasEnemy) return false;
 
         if (_unit.Parameters.StartChaseDistance >= distance)

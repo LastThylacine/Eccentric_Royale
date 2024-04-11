@@ -61,4 +61,16 @@ public class MapInfo : MonoBehaviour
 
         return nearest;
     }
+
+    public void RemoveTower(Tower tower, bool enemy)
+    {
+        List<Tower> towers = enemy ? _enemyTowers : _playerTowers;
+        towers.Remove(tower);
+    }
+
+    public void RemoveUnit(Unit unit, bool enemy)
+    {
+        List<Unit> units = enemy ? _enemyUnits : _playerUnits;
+        units.Remove(unit);
+    }
 }
