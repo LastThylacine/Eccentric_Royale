@@ -204,10 +204,11 @@ MonoBehaviour:
   <IsFly>k__BackingField: 0
   <Speed>k__BackingField: 4
   <ModelRadius>k__BackingField: 0.5
-  <StartChaseDistance>k__BackingField: 6
-  <StopChaseDistance>k__BackingField: 8
-  _startAttackDistance: 3
-  _stopAttackDistance: 4
+  <StartChaseDistance>k__BackingField: 10
+  <StopChaseDistance>k__BackingField: 12
+  <DamageDelay>k__BackingField: 2
+  _startAttackDistance: 5
+  _stopAttackDistance: 6
 --- !u!114 &4424514505164785838
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -365,7 +366,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8507134806654505971}
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -398,7 +399,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.3584906, g: 0.35365918, b: 0.35365918, a: 1}
+  m_Color: {r: 0.19215687, g: 0.1882353, b: 0.1882353, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -428,7 +429,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_EffectColor: {r: 0, g: 0, b: 0, a: 1}
-  m_EffectDistance: {x: 0.03, y: -0.03}
+  m_EffectDistance: {x: 0.07, y: -0.07}
   m_UseGraphicAlpha: 1
 --- !u!1001 &6291138072868533663
 PrefabInstance:
