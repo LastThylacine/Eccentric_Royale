@@ -1,8 +1,10 @@
+using System;
 using UnityEngine;
-using static UnityEditor.PlayerSettings;
 
 public class Health : MonoBehaviour
 {
+    public event Action<float> UpdateHealth;
+
     [field: SerializeField] public float Max { get; private set; } = 10f;
     private float _current;
 
@@ -16,11 +18,11 @@ public class Health : MonoBehaviour
         _current -= value;
         if (_current < 0) _current = 0;
 
-        Debug.Log($"Object {name}: then - {_current + value}, now - {_current}");
+        UpdateHealth?.Invoke(_current);
     }
 }
 
-interface IHealth
+public interface IHealth
 {
     Health Health { get; }
 }

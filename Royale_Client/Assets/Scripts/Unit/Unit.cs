@@ -1,11 +1,15 @@
+using System;
 using UnityEngine;
 
-[RequireComponent(typeof(UnitParameters), typeof(Health))]
-public class Unit : MonoBehaviour, IHealth
+[RequireComponent(typeof(UnitParameters), typeof(Health), typeof(UnitAnimation))]
+public class Unit : MonoBehaviour, IHealth, IDestroyed
 {
+    public event Action Destroyed;
+
     [field: SerializeField] public Health Health { get; private set; }
     [field: SerializeField] public bool IsEnemy { get; private set; } = false;
     [field: SerializeField] public UnitParameters Parameters;
+    [SerializeField] private UnitAnimation _animation;
     [SerializeField] private UnitState _defaultStateSO;
     [SerializeField] private UnitState _chaseStateSO;
     [SerializeField] private UnitState _attackStateSO;
@@ -13,9 +17,26 @@ public class Unit : MonoBehaviour, IHealth
     private UnitState _defaultState;
     private UnitState _chaseState;
     private UnitState _attackState;
-    private UnitState _currentState;
+    private UnitState _currentState; 
 
     private void Start()
+    {
+        _animation.Init(this);
+
+        CreateStates();
+
+        _currentState = _defaultState;
+        _currentState.Init();
+
+        Health.UpdateHealth += CheckDestroy;
+    }
+
+    private void Update()
+    {
+        _currentState.Run();
+    }
+
+    private void CreateStates()
     {
         _defaultState = Instantiate(_defaultStateSO);
         _defaultState.Constructor(this);
@@ -25,14 +46,16 @@ public class Unit : MonoBehaviour, IHealth
 
         _attackState = Instantiate(_attackStateSO);
         _attackState.Constructor(this);
-
-        _currentState = _defaultState;
-        _currentState.Init();
     }
 
-    private void Update()
+    private void CheckDestroy(float currentHealth)
     {
-        _currentState.Run();
+        if (currentHealth > 0) return;
+
+        Health.UpdateHealth -= CheckDestroy;
+        Destroy(gameObject);
+
+        Destroyed?.Invoke();
     }
 
     public void SetState(UnitStateType type)
@@ -56,11 +79,13 @@ public class Unit : MonoBehaviour, IHealth
         }
 
         _currentState.Init();
+        _animation.SetState(type);
     }
 
 #if UNITY_EDITOR
     [Space(24)]
     [SerializeField] private bool _debug = false;
+
     private void OnDrawGizmos()
     {
         if (!_debug) return;
