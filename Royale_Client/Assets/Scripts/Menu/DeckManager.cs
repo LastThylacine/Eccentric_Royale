@@ -38,6 +38,19 @@ public class DeckManager : MonoBehaviour
         UpdateAvailable?.Invoke(AvailableCards, SelectedCards);
         UpdateSelected?.Invoke(SelectedCards);
     }
+
+    public void SetSelectedCards(IReadOnlyList<Card> cards)
+    {
+        _selectedCards.Clear();
+
+        for (int i = 0; i < cards.Count; i++)
+        {
+            _selectedCards.Add(_cards[cards[i].ID]);
+        }
+
+        UpdateAvailable?.Invoke(AvailableCards, SelectedCards);
+        UpdateSelected?.Invoke(SelectedCards);
+    }
 }
 
 [System.Serializable]

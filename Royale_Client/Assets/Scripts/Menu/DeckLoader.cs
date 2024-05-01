@@ -4,6 +4,7 @@ using UnityEngine;
 public class DeckLoader : MonoBehaviour
 {
     [SerializeField] private DeckManager _manager;
+    [SerializeField] private GameObject _loadingPanel;
     [SerializeField] private List<int> _avaliableCards = new List<int>();
     [SerializeField] private int[] _selectedCards = new int[5];
 
@@ -15,9 +16,11 @@ public class DeckLoader : MonoBehaviour
     public void StartLoad()
     {
         Network.Instance.Post(URLLibrary.MAIN + URLLibrary.GETDECKINFO,
-            new Dictionary<string, string> { { "userID", "19"/*UserInfo.Instance.ID.ToString()*/ } },
+            new Dictionary<string, string> { { "userID", "1"/*UserInfo.Instance.ID.ToString()*/ } },
             SucessLoad, ErrorLoad
             );
+
+        _loadingPanel.SetActive(true);
     }
 
     private void ErrorLoad(string error)
@@ -43,6 +46,8 @@ public class DeckLoader : MonoBehaviour
         }
 
         _manager.Init(_avaliableCards, _selectedCards);
+
+        _loadingPanel.SetActive(false);
     }
 }
 
