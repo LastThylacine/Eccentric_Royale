@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class DeckManager : MonoBehaviour
 {
+    [SerializeField] private GameObject _loadingCanvas;
     [SerializeField] private Card[] _cards;
     [SerializeField] private List<Card> _availableCards = new List<Card>();
     [SerializeField] private List<Card> _selectedCards = new List<Card>();
@@ -37,6 +38,67 @@ public class DeckManager : MonoBehaviour
 
         UpdateAvailable?.Invoke(AvailableCards, SelectedCards);
         UpdateSelected?.Invoke(SelectedCards);
+
+        _loadingCanvas.SetActive(false);
+    }
+
+    public void ChangeDeck(IReadOnlyList<Card> selectedCards, Action success)
+    {
+        _loadingCanvas.SetActive(true);
+
+        int[] IDs = new int[selectedCards.Count];
+        for (int i = 0; i < selectedCards.Count; i++)
+        {
+            IDs[i] = selectedCards[i].ID;
+        }
+
+        string json = JsonUtility.ToJson(new Wrapper(IDs));
+        string uri = URLLibrary.MAIN + URLLibrary.SETSELECTEDDECK;
+        Dictionary<string, string> data = new Dictionary<string, string> {
+            { "userID", UserInfo.Instance.ID.ToString() },
+            {"json", json }
+        };
+
+        success += () =>
+        {
+            for (int i = 0; i < _selectedCards.Count; i++)
+            {
+                _selectedCards[i] = selectedCards[i];
+            }
+
+            UpdateSelected?.Invoke(SelectedCards);
+        };
+
+        Network.Instance.Post(uri, data, (s) => SendSuccess(s, success), Error);
+    }
+
+    private void SendSuccess(string obj, Action success)
+    {
+        if (obj != "ok")
+        {
+            Error(obj);
+            return;
+        }
+
+        success?.Invoke();
+        _loadingCanvas.SetActive(false);
+    }
+
+    private void Error(string obj)
+    {
+        Debug.LogError("Неудачная попытка отправки новой колоды: " + obj);
+        _loadingCanvas.SetActive(false);
+    }
+
+    [System.Serializable]
+    private class Wrapper
+    {
+        public int[] IDs;
+
+        public Wrapper(int[] ids)
+        {
+            this.IDs = ids;
+        }
     }
 }
 
