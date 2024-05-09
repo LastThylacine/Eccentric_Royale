@@ -7,6 +7,7 @@ public class MenuSubscriber : MonoBehaviour
     [SerializeField] private SelectedDeckUI _selectedDeckUI2;
     [SerializeField] private SelectedDeckUI _selectedDeckUIMatchmaking;
     [SerializeField] private AvailableDeckUI _availableDeckUI;
+    [SerializeField] private MatchmakingManager _matchmakingManager;
 
     private void Start()
     {
@@ -14,6 +15,8 @@ public class MenuSubscriber : MonoBehaviour
         _deckManager.UpdateSelected += _selectedDeckUI2.UpdateCardsList;
         _deckManager.UpdateSelected += _selectedDeckUIMatchmaking.UpdateCardsList;
         _deckManager.UpdateAvailable += _availableDeckUI.UpdateCardsList;
+
+        _matchmakingManager.Subscribe();
     }
 
     private void OnDestroy()
@@ -22,5 +25,7 @@ public class MenuSubscriber : MonoBehaviour
         _deckManager.UpdateSelected -= _selectedDeckUI2.UpdateCardsList;
         _deckManager.UpdateSelected -= _selectedDeckUIMatchmaking.UpdateCardsList;
         _deckManager.UpdateAvailable -= _availableDeckUI.UpdateCardsList;
+
+        _matchmakingManager.Unsubscribe();
     }
 }

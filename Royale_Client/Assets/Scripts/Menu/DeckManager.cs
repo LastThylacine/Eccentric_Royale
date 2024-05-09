@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class DeckManager : MonoBehaviour
 {
@@ -90,6 +91,24 @@ public class DeckManager : MonoBehaviour
         _loadingCanvas.SetActive(false);
     }
 
+    public bool TryGetDeck(string[] cardsIDs, out Dictionary<string, Card> deck)
+    {
+        deck = new Dictionary<string, Card>();
+
+        for (int i = 0; i < cardsIDs.Length; i++)
+        {
+            if (!int.TryParse(cardsIDs[i], out int id) || id == 0) return false;
+
+            Card card = _cards.FirstOrDefault(c => c.ID == id);
+
+            if (card == null) return false;
+
+            deck.Add(cardsIDs[i], card);
+        }
+
+        return true;
+    }
+
     [System.Serializable]
     private class Wrapper
     {
@@ -108,4 +127,5 @@ public class Card
     [field: SerializeField] public string Name { get; private set; }
     [field: SerializeField] public int ID { get; private set; }
     [field: SerializeField] public Sprite Sprite { get; private set; }
+    [field: SerializeField] public Unit Unit { get; private set; }
 }

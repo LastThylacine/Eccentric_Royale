@@ -92,7 +92,7 @@ GameObject:
   - component: {fileID: 4424514505164785838}
   - component: {fileID: 3348580649335258260}
   m_Layer: 0
-  m_Name: Golem
+  m_Name: Golem_Transparent
   m_TagString: Untagged
   m_Icon: {fileID: 2974397684917235467, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
@@ -1464,6 +1464,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: -45.69597
       objectReference: {fileID: 0}
+    - target: {fileID: 1734572081993647880, guid: 7f3425f16f17470468f250a8fd950f73,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: c95cd835dad4f3640b8d6147ff0977a5, type: 2}
     - target: {fileID: 1734572081997904328, guid: 7f3425f16f17470468f250a8fd950f73,
         type: 3}
       propertyPath: m_Controller
