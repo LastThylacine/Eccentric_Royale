@@ -14,9 +14,14 @@ public class CardManager : MonoBehaviour
     private Camera _camera;
     private List<string> _freeCardsIDs;
     private string _nextCardID;
+    private Spawner _spawner;
+    private MultiplayerManager _multiplayerManager;
 
     private void Start()
     {
+        _multiplayerManager = MultiplayerManager.Instance;
+        _spawner = FindObjectOfType<Spawner>();
+
         _ids = new string[_cardControllers.Length];
         _camera = Camera.main;
         _cardsInGame = CardsInGame.Instance;
@@ -33,6 +38,8 @@ public class CardManager : MonoBehaviour
         }
 
         SetNextRandom();
+
+        _multiplayerManager.Spawn += Spawn;
     }
 
     private void SetNextRandom()
@@ -72,7 +79,36 @@ public class CardManager : MonoBehaviour
 
         SetNextRandom();
 
-        FindObjectOfType<Spawner>().Spawn(id, spawnPoint, false);
+        //_spawner.Spawn(id, spawnPoint, false);
+
+        SendSpawnInfo(in id, in spawnPoint);
+    }
+
+    private void SendSpawnInfo(in string id, in Vector3 position)
+    {
+        CardInfo cardInfo = new CardInfo();
+
+        cardInfo.id = id;
+
+        cardInfo.x = position.x;
+        cardInfo.z = position.z;
+
+        cardInfo.playerID = _multiplayerManager.ClientID;
+
+        string json = JsonUtility.ToJson(cardInfo);
+
+        _multiplayerManager.SendMessage("spawn", json);
+    }
+
+    private void Spawn(string cardInfoJSON)
+    {
+        CardInfo cardInfo = JsonUtility.FromJson<CardInfo>(cardInfoJSON);
+
+        Vector3 position = new Vector3(cardInfo.x, 0, cardInfo.z);
+
+        bool isEnemy = _multiplayerManager.ClientID == cardInfo.playerID ? false : true;
+
+        _spawner.Spawn(cardInfo.id, position, isEnemy);
     }
 
     private bool TryGetSpawnPoint(Vector3 screenPointPosition, out Vector3 spawnPoint)
@@ -88,5 +124,19 @@ public class CardManager : MonoBehaviour
 
         spawnPoint = Vector3.zero;
         return false;
+    }
+
+    private void OnDestroy()
+    {
+        _multiplayerManager.Spawn -= Spawn;
+    }
+
+    [System.Serializable]
+    private class CardInfo
+    {
+        public string id;
+        public float x;
+        public float z;
+        public string playerID;
     }
 }

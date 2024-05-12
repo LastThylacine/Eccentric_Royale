@@ -9,11 +9,13 @@ public class MultiplayerManager : ColyseusManager<MultiplayerManager>
     private const string GET_READY_NAME = "GetReady";
     private const string START_GAME_NAME = "Start";
     private const string CANCEL_START_NAME = "CancelStart";
+    private const string SPAWN_NAME = "Spawn";
 
     private ColyseusRoom<State> _room;
     public event Action GetReady;
     public event Action<string> StartGame;
     public event Action CancelStart;
+    public event Action<string> Spawn;
 
     public string ClientID
     {
@@ -39,11 +41,22 @@ public class MultiplayerManager : ColyseusManager<MultiplayerManager>
         _room.OnMessage<object>(GET_READY_NAME, (empty) => GetReady?.Invoke());
         _room.OnMessage<string>(START_GAME_NAME, (jsonDecks) => StartGame?.Invoke(jsonDecks));
         _room.OnMessage<object>(CANCEL_START_NAME, (empty) => CancelStart?.Invoke());
+        _room.OnMessage<string>(SPAWN_NAME, (jsonSpawnInfo) => Spawn?.Invoke(jsonSpawnInfo));
     }
 
     public void Leave()
     {
         _room?.Leave();
         _room = null;
+    }
+
+    public void SendMessage(string key, Dictionary<string, object> data)
+    {
+        _room.Send(key, data);
+    }
+
+    public void SendMessage(string key, string data)
+    {
+        _room.Send(key, data);
     }
 }

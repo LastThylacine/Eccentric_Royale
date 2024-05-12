@@ -28,8 +28,11 @@ export class StateHandlerRoom extends Room<State> {
 
         this.setState(new State());
 
-        this.onMessage("move", (client, data) => {
+        this.onMessage("spawn", (client, data) => {
             console.log("StateHandlerRoom received message from", client.sessionId, ":", data);
+
+            this.broadcast("Spawn", data);
+
             //this.state.movePlayer(client.sessionId, data);
         });
     }
@@ -48,13 +51,14 @@ export class StateHandlerRoom extends Room<State> {
 
         this.state.createPlayer(client.sessionId);
 
-        //if (this.clients.length < 2) return;
+        if (this.clients.length < 2) return;
 
         this.broadcast("GetReady");
 
         this.awaitStart = this.clock.setTimeout(() => {
             try {
                 this.broadcast("Start", JSON.stringify({ player1ID: this.clients[0].id, player1: this.playersDeck.get(this.clients[0].id), player2: this.playersDeck.get(this.clients[0].id) }));
+                //this.broadcast("Start", JSON.stringify({ player1ID: this.clients[0].id, player1: this.playersDeck.get(this.clients[0].id), player2: this.playersDeck.get(this.clients[1].id) }));
 
                 this.gameIsStarted = true;
             } catch (error) {
