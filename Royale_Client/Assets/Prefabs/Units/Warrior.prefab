@@ -1289,6 +1289,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: Spider Toxin
       objectReference: {fileID: 0}
+    - target: {fileID: 8754938060835480252, guid: 79f78ce4b8eba2a4c91a83e3d0133dbf,
+        type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8754938060835480252, guid: 79f78ce4b8eba2a4c91a83e3d0133dbf,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 62a084968d220ca46b2ba99d903753fb, type: 2}
     - target: {fileID: 8754938060839623804, guid: 79f78ce4b8eba2a4c91a83e3d0133dbf,
         type: 3}
       propertyPath: m_Controller

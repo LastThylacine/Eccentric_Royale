@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 public class CardManager : MonoBehaviour
 {
+    [SerializeField] private Spawner _spawner;
     [SerializeField] private CardController[] _cardControllers;
     [SerializeField] private Image _nextCardImage;
     [SerializeField] private int _layerIndex = 6;
@@ -72,7 +73,7 @@ public class CardManager : MonoBehaviour
 
         SetNextRandom();
 
-        FindObjectOfType<Spawner>().Spawn(id, spawnPoint, false);
+        _spawner.SendSpawn(id, spawnPoint);
     }
 
     private bool TryGetSpawnPoint(Vector3 screenPointPosition, out Vector3 spawnPoint)

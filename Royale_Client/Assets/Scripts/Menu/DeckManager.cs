@@ -128,4 +128,5 @@ public class Card
     [field: SerializeField] public int ID { get; private set; }
     [field: SerializeField] public Sprite Sprite { get; private set; }
     [field: SerializeField] public Unit Unit { get; private set; }
+    [field: SerializeField] public GameObject Hologram { get; private set; }
 }

@@ -444,6 +444,16 @@ PrefabInstance:
       propertyPath: m_Controller
       value: 
       objectReference: {fileID: 9100000, guid: e5056f8df7cfca846b27f9165a0acd0b, type: 2}
+    - target: {fileID: 2611149553090704807, guid: add7e67fb68b0d54a9d9893bd0356223,
+        type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2611149553090704807, guid: add7e67fb68b0d54a9d9893bd0356223,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 520eebcde5a07aa4387891b2b61a7db9, type: 2}
     - target: {fileID: 2611149553095877761, guid: add7e67fb68b0d54a9d9893bd0356223,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
