@@ -1,6 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
-using static TimerManager;
+using static TimeManager;
 
 public class StartTimer : MonoBehaviour
 {

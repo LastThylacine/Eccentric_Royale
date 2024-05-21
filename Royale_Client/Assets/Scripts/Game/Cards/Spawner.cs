@@ -1,4 +1,4 @@
-using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -22,6 +22,7 @@ public class Spawner : MonoBehaviour
         public uint serverTime;
     }
 
+    [SerializeField] private TimeManager _timeManager;
     private Queue<GameObject> _holograms = new Queue<GameObject>();
 
     private void Start()
@@ -38,32 +39,15 @@ public class Spawner : MonoBehaviour
         MultiplayerManager.Instance.Cheat -= CancelSpawn;
     }
 
-    private void SpawnPlayer(string json)
+    private void SpawnPlayer(string json) => StartCoroutine(Spawn(json, false));
+
+    private void SpawnEnemy(string json) => StartCoroutine(Spawn(json, true));
+
+    public IEnumerator Spawn(string jsonSpawnData, bool isEnemy)
     {
-        Debug.Log(json);
-        SpawnData data = JsonUtility.FromJson<SpawnData>(json);
+        SpawnData data = JsonUtility.FromJson<SpawnData>(jsonSpawnData);
         string id = data.cardID;
         Vector3 spawnPoint = new Vector3(data.x, data.y, data.z);
-
-        Spawn(id, spawnPoint, false);
-    }
-
-    private void SpawnEnemy(string json)
-    {
-        SpawnData data = JsonUtility.FromJson<SpawnData>(json);
-        string id = data.cardID;
-        Vector3 spawnPoint = new Vector3(data.x, data.y, data.z);
-
-        Spawn(id, spawnPoint, true);
-    }
-
-    private void Spawn(string id, Vector3 spawnPoint, bool isEnemy)
-    {
-        if (!isEnemy && _holograms.Count > 0)
-        {
-            var hologram = _holograms.Dequeue();
-            Destroy(hologram);
-        }
 
         Unit unitPrefab;
         Quaternion rotation = Quaternion.identity;
@@ -77,8 +61,24 @@ public class Spawner : MonoBehaviour
         else
             unitPrefab = CardsInGame.Instance.PlayerDeck[id].Unit;
 
-        Unit unit = Instantiate(unitPrefab, spawnPoint, rotation);
+        float diff = _timeManager.GetConvertTime(data.serverTime) - Time.time;
 
+        if (diff < 0)
+        {
+            Debug.LogError("Время с сервера было отправлено слишком поздно");
+        }
+        else
+        {
+            yield return new WaitForSeconds(diff);
+        }
+
+        if (!isEnemy && _holograms.Count > 0)
+        {
+            var hologram = _holograms.Dequeue();
+            Destroy(hologram);
+        }
+
+        Unit unit = Instantiate(unitPrefab, spawnPoint, rotation);
         unit.Init(isEnemy);
         MapInfo.Instance.AddUnit(unit);
     }

@@ -37,7 +37,7 @@ export class StateHandlerRoom extends Room<State> {
             const spawnData = JSON.parse(data.json);
 
             if (this.playersDeck.get(client.id).includes(spawnData.cardID)) {
-                spawnData.serverTime = this.clock.elapsedTime;
+                spawnData.serverTime = this.clock.elapsedTime + 1000;
                 const json = JSON.stringify(spawnData);
                 client.send("SpawnPlayer", json);
                 this.broadcast("SpawnEnemy", json, { except: client });
@@ -64,14 +64,14 @@ export class StateHandlerRoom extends Room<State> {
 
         this.state.createPlayer(client.sessionId);
 
-        //if (this.clients.length < 2) return;
+        if (this.clients.length < 2) return;
 
         this.broadcast("GetReady");
 
         this.awaitStart = this.clock.setTimeout(() => {
             try {
-                this.broadcast("Start", JSON.stringify({ player1ID: this.clients[0].id, player1: this.playersDeck.get(this.clients[0].id), player2: this.playersDeck.get(this.clients[0].id) }));
-                //this.broadcast("Start", JSON.stringify({ player1ID: this.clients[0].id, player1: this.playersDeck.get(this.clients[0].id), player2: this.playersDeck.get(this.clients[1].id) }));
+                //this.broadcast("Start", JSON.stringify({ player1ID: this.clients[0].id, player1: this.playersDeck.get(this.clients[0].id), player2: this.playersDeck.get(this.clients[0].id) }));
+                this.broadcast("Start", JSON.stringify({ player1ID: this.clients[0].id, player1: this.playersDeck.get(this.clients[0].id), player2: this.playersDeck.get(this.clients[1].id) }));
 
                 this.gameIsStarted = true;
             } catch (error) {
@@ -85,6 +85,7 @@ export class StateHandlerRoom extends Room<State> {
             if (this.tickCount > 9) this.startTimer.clear();
         }, 1000)
     }
+
     onLeave(client) {
         if (this.gameIsStarted === false && this.awaitStart !== undefined && this.awaitStart.active) {
             this.broadcast("CancelStart");
