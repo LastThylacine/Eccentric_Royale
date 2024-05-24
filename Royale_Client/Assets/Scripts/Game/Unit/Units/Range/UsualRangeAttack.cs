@@ -9,7 +9,7 @@ public class UsualRangeAttack : UnitStateAttack
     {
         Vector3 unitPosition = _unit.transform.position;
 
-        bool hasEnemy = MapInfo.Instance.TryGetNearestAnyUnit(unitPosition, _targetIsEnemy, out Unit enemy, out float distance);
+        bool hasEnemy = _unit.MapInfo.TryGetNearestAnyUnit(unitPosition, _targetIsEnemy, out Unit enemy, out float distance);
         if (hasEnemy && distance - enemy.Parameters.ModelRadius <= _unit.Parameters.StartAttackDistance)
         {
             _target = enemy.Health;
@@ -17,7 +17,7 @@ public class UsualRangeAttack : UnitStateAttack
             return true;
         }
 
-        Tower targetTower = MapInfo.Instance.GetNearestTower(unitPosition, _targetIsEnemy);
+        Tower targetTower = _unit.MapInfo.GetNearestTower(unitPosition, _targetIsEnemy);
         if (targetTower.GetDistance(unitPosition) <= _unit.Parameters.StartAttackDistance)
         {
             _target = targetTower.Health;

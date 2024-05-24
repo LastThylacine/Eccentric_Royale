@@ -3,26 +3,6 @@ using UnityEngine;
 
 public class MapInfo : MonoBehaviour
 {
-    #region SingletonOneScene
-    public static MapInfo Instance { get; private set; }
-
-    private void Awake()
-    {
-        if (Instance)
-        {
-            Destroy(gameObject);
-            return;
-        }
-
-        Instance = this;
-    }
-
-    private void OnDestroy()
-    {
-        if (Instance == this) Instance = null;
-    }
-    #endregion
-
     [SerializeField] private List<Tower> _enemyTowers = new List<Tower>();
     [SerializeField] private List<Tower> _playerTowers = new List<Tower>();
 
@@ -37,6 +17,13 @@ public class MapInfo : MonoBehaviour
         SubscribeDestroy(_playerTowers);
         SubscribeDestroy(_enemyWalkingUnits);
         SubscribeDestroy(_playerWalkingUnits);
+    }
+
+    public void AddTower(Tower tower, bool isEnemy)
+    {
+        List<Tower> list = isEnemy ? _enemyTowers : _playerTowers;
+
+        AddObjectToList(list, tower);
     }
 
     public void AddUnit(Unit unit)

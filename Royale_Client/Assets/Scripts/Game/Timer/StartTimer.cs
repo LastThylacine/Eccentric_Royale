@@ -1,32 +1,19 @@
 using UnityEngine;
 using UnityEngine.UI;
-using static TimeManager;
 
 public class StartTimer : MonoBehaviour
 {
+    [SerializeField] private GameObject _destroyedObject;
     [SerializeField] private Text _text;
 
-    private void Start()
+    public void StartTick(int tick)
     {
-        MultiplayerManager.Instance.StartTick += StartTick;
+        Debug.Log(tick);
+        _text.text = tick.ToString();
     }
 
-    private void OnDestroy()
+    public void Destroy()
     {
-        MultiplayerManager.Instance.StartTick -= StartTick;
-    }
-
-    private void StartTick(string jsonTick)
-    {
-        Tick tick = JsonUtility.FromJson<Tick>(jsonTick);
-
-        if (tick.tick < 10)
-        {
-            _text.text = (10 - tick.tick).ToString();
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
+        Destroy(_destroyedObject);
     }
 }

@@ -9,7 +9,7 @@ public class UsualTowerAttack : UnitStateAttack
     {
         Vector3 unitPosition = _unit.transform.position;
 
-        Tower targetTower = MapInfo.Instance.GetNearestTower(unitPosition, _targetIsEnemy);
+        Tower targetTower = _unit.MapInfo.GetNearestTower(unitPosition, _targetIsEnemy);
         if (targetTower.GetDistance(unitPosition) <= _unit.Parameters.StartAttackDistance)
         {
             _target = targetTower.Health;

@@ -26,7 +26,7 @@ public abstract class UnitStateNavMeshMove : UnitState
     public override void Init()
     {
         Vector3 unitPosition = _unit.transform.position;
-        _nearestTower = MapInfo.Instance.GetNearestTower(in unitPosition, _targetIsEnemy);
+        _nearestTower = _unit.MapInfo.GetNearestTower(in unitPosition, _targetIsEnemy);
 
         _agent.SetDestination(_nearestTower.transform.position);
     }

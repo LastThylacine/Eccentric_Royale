@@ -5,29 +5,15 @@ using UnityEngine;
 
 public class CardsInGame : MonoBehaviour
 {
-    public static CardsInGame Instance { get; private set; }
-
-    private void Awake()
-    {
-        if (Instance)
-        {
-            Destroy(gameObject);
-            return;
-        }
-
-        Instance = this;
-        DontDestroyOnLoad(gameObject);
-    }
+    [SerializeField] private CardsLibrary _library;
 
     public ReadOnlyDictionary<string, Card> PlayerDeck { get; private set; }
     public ReadOnlyDictionary<string, Card> EnemyDeck { get; private set; }
 
     public void SetDecks(string[] playerCards, string[] enemyCards)
     {
-        DeckManager deckManager = FindObjectOfType<DeckManager>();
-
-        bool player = deckManager.TryGetDeck(playerCards, out Dictionary<string, Card> playerDeck);
-        bool enemy = deckManager.TryGetDeck(enemyCards, out Dictionary<string, Card> enemyDeck);
+        bool player = _library.TryGetDeck(playerCards, out Dictionary<string, Card> playerDeck);
+        bool enemy = _library.TryGetDeck(enemyCards, out Dictionary<string, Card> enemyDeck);
 
         if (!player || !enemy)
         {

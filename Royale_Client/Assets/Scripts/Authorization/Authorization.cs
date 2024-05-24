@@ -12,6 +12,7 @@ public class Authorization : MonoBehaviour
     private string _password;
 
     public event Action Error;
+    public event Action Success;
 
     public void SetLogin(string login)
     {
@@ -37,10 +38,10 @@ public class Authorization : MonoBehaviour
             {LOGIN, _login },
             {PASSWORD, _password }
         };
-        Network.Instance.Post(url, data, Success, ErrorMessage);
+        Network.Instance.Post(url, data, SuccessMessage, ErrorMessage);
     }
 
-    private void Success(string data)
+    private void SuccessMessage(string data)
     {
         string[] result = data.Split('|');
         if(result.Length < 2 || result[0] != "ok")
@@ -53,6 +54,7 @@ public class Authorization : MonoBehaviour
         {
             UserInfo.Instance.SetID(id);
             Debug.Log("Успешный вход, ID: " + id);
+            Success?.Invoke();
         }
         else
         {

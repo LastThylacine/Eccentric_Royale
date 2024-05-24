@@ -1,15 +1,15 @@
 using System;
 using System.Collections.Generic;
-using UnityEngine;
 using System.Linq;
+using UnityEngine;
 
 public class DeckManager : MonoBehaviour
 {
     [SerializeField] private GameObject _loadingCanvas;
-    [SerializeField] private Card[] _cards;
     [SerializeField] private List<Card> _availableCards = new List<Card>();
     [SerializeField] private List<Card> _selectedCards = new List<Card>();
 
+    [field: SerializeField] public CardsLibrary Library { get; private set; }
     public IReadOnlyList<Card> AvailableCards { get { return _availableCards; } }
     public IReadOnlyList<Card> SelectedCards { get { return _selectedCards; } }
     public event Action<IReadOnlyList<Card>, IReadOnlyList<Card>> UpdateAvailable;
@@ -17,11 +17,7 @@ public class DeckManager : MonoBehaviour
 
     #region Editor
 #if UNITY_EDITOR
-    [SerializeField] private AvailableDeckUI _avaliableDeckUI;
-    private void OnValidate()
-    {
-        _avaliableDeckUI.SetAllCardsCount(_cards);
-    }
+    [field: SerializeField] public AvailableDeckUI AvaliableDeckUI { get; private set; }
 #endif
     #endregion
 
@@ -29,12 +25,12 @@ public class DeckManager : MonoBehaviour
     {
         for (int i = 0; i < availableCardIndexes.Count; i++)
         {
-            _availableCards.Add(_cards[availableCardIndexes[i]]);
+            _availableCards.Add(Library.Cards[availableCardIndexes[i]]);
         }
 
         for (int i = 0; i < selectedCardIndexes.Length; i++)
         {
-            _selectedCards.Add(_cards[selectedCardIndexes[i]]);
+            _selectedCards.Add(Library.Cards[selectedCardIndexes[i]]);
         }
 
         UpdateAvailable?.Invoke(AvailableCards, SelectedCards);
@@ -91,24 +87,6 @@ public class DeckManager : MonoBehaviour
         _loadingCanvas.SetActive(false);
     }
 
-    public bool TryGetDeck(string[] cardsIDs, out Dictionary<string, Card> deck)
-    {
-        deck = new Dictionary<string, Card>();
-
-        for (int i = 0; i < cardsIDs.Length; i++)
-        {
-            if (!int.TryParse(cardsIDs[i], out int id) || id == 0) return false;
-
-            Card card = _cards.FirstOrDefault(c => c.ID == id);
-
-            if (card == null) return false;
-
-            deck.Add(cardsIDs[i], card);
-        }
-
-        return true;
-    }
-
     [System.Serializable]
     private class Wrapper
     {
@@ -119,14 +97,4 @@ public class DeckManager : MonoBehaviour
             this.IDs = ids;
         }
     }
-}
-
-[System.Serializable]
-public class Card
-{
-    [field: SerializeField] public string Name { get; private set; }
-    [field: SerializeField] public int ID { get; private set; }
-    [field: SerializeField] public Sprite Sprite { get; private set; }
-    [field: SerializeField] public Unit Unit { get; private set; }
-    [field: SerializeField] public GameObject Hologram { get; private set; }
 }

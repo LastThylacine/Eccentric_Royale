@@ -1,13 +1,20 @@
+using Mirror;
 using System;
 using System.Collections;
 using UnityEngine;
 
-public class Health : MonoBehaviour
+public class Health : NetworkBehaviour
 {
     public event Action<float> UpdateHealth;
 
     [field: SerializeField] public float Max { get; private set; } = 10f;
+    [SyncVar (hook = nameof(HealthHook))]
     private float _current;
+
+    private void HealthHook(float oldValue, float newValue)
+    {
+        UpdateHealth?.Invoke(newValue);
+    }
 
     private void Start()
     {

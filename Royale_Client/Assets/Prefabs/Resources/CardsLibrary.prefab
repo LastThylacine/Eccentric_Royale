@@ -1,0 +1,124 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &8401261812101742770
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 205836617403370045}
+  - component: {fileID: 6455418895743666787}
+  m_Layer: 0
+  m_Name: CardsLibrary
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &205836617403370045
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8401261812101742770}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -52.82414, y: -36.828773, z: -29.833416}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6455418895743666787
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8401261812101742770}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 85684b71d25883347ba3cdce4d111f9b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Cards>k__BackingField:
+  - <Name>k__BackingField: EMPTY
+    <ID>k__BackingField: 0
+    <Sprite>k__BackingField: {fileID: 0}
+    <Unit>k__BackingField: {fileID: 0}
+    <Hologram>k__BackingField: {fileID: 0}
+  - <Name>k__BackingField: Archer
+    <ID>k__BackingField: 1
+    <Sprite>k__BackingField: {fileID: 21300000, guid: 5396270d70a3b7646baedf0a87693e26,
+      type: 3}
+    <Unit>k__BackingField: {fileID: 9104803564683660833, guid: 324b399193f7f3c4b9a44793b78c1d2c,
+      type: 3}
+    <Hologram>k__BackingField: {fileID: 7160668322234071085, guid: a87f651b28f3d234db143fa6b87bea0c,
+      type: 3}
+  - <Name>k__BackingField: Archer_Sunflower
+    <ID>k__BackingField: 2
+    <Sprite>k__BackingField: {fileID: 21300000, guid: fb59b0c94e2e557498ac28c4cfa65473,
+      type: 3}
+    <Unit>k__BackingField: {fileID: 9104803564683660833, guid: 8c6db5ca22dfee54e82dcb4439649957,
+      type: 3}
+    <Hologram>k__BackingField: {fileID: 8663426514577559114, guid: 81dfb0b2707204f4fb8cd3062f9f1c6c,
+      type: 3}
+  - <Name>k__BackingField: Golem
+    <ID>k__BackingField: 3
+    <Sprite>k__BackingField: {fileID: 21300000, guid: 7cd4aeee946fa7745841c2e9689f038f,
+      type: 3}
+    <Unit>k__BackingField: {fileID: 9104803564683660833, guid: ae8bdd032cdc68d40949c246ff60925f,
+      type: 3}
+    <Hologram>k__BackingField: {fileID: 1734572081990470152, guid: 7f3425f16f17470468f250a8fd950f73,
+      type: 3}
+  - <Name>k__BackingField: Golem_Sting
+    <ID>k__BackingField: 4
+    <Sprite>k__BackingField: {fileID: 21300000, guid: 378c532d84ce2ef4ba7bf271124e7e58,
+      type: 3}
+    <Unit>k__BackingField: {fileID: 9104803564683660833, guid: 7a28b92679378e34e8cc09d51636a3f6,
+      type: 3}
+    <Hologram>k__BackingField: {fileID: 1734572081990470152, guid: 7f3425f16f17470468f250a8fd950f73,
+      type: 3}
+  - <Name>k__BackingField: Golem_Silver
+    <ID>k__BackingField: 5
+    <Sprite>k__BackingField: {fileID: 21300000, guid: 3f94f0563e9f68c478363a910ee81c3c,
+      type: 3}
+    <Unit>k__BackingField: {fileID: 9104803564683660833, guid: 5f58822eb5ff83f4a9f9f8ac7fd021f3,
+      type: 3}
+    <Hologram>k__BackingField: {fileID: 1734572081990470152, guid: 7f3425f16f17470468f250a8fd950f73,
+      type: 3}
+  - <Name>k__BackingField: Golem_Transparent
+    <ID>k__BackingField: 6
+    <Sprite>k__BackingField: {fileID: 21300000, guid: 9f7b8357f1018be46a911a557ac7e521,
+      type: 3}
+    <Unit>k__BackingField: {fileID: 9104803564683660833, guid: 906d4d5ec3d20cf45a05d652188ef3dd,
+      type: 3}
+    <Hologram>k__BackingField: {fileID: 1734572081990470152, guid: 7f3425f16f17470468f250a8fd950f73,
+      type: 3}
+  - <Name>k__BackingField: Golem_Brilliant
+    <ID>k__BackingField: 7
+    <Sprite>k__BackingField: {fileID: 21300000, guid: 56a776eefb1e7f344b5475da3dfc6ce6,
+      type: 3}
+    <Unit>k__BackingField: {fileID: 9104803564683660833, guid: 91862d8df166faf4b866c16f92f56baa,
+      type: 3}
+    <Hologram>k__BackingField: {fileID: 1734572081990470152, guid: 7f3425f16f17470468f250a8fd950f73,
+      type: 3}
+  - <Name>k__BackingField: Warrior
+    <ID>k__BackingField: 8
+    <Sprite>k__BackingField: {fileID: 21300000, guid: 21c303ecb21e31d4787b7b10773edf2f,
+      type: 3}
+    <Unit>k__BackingField: {fileID: 9104803564683660833, guid: 3de22a9117f266440818394124ed6dad,
+      type: 3}
+    <Hologram>k__BackingField: {fileID: 8754938060832370620, guid: 79f78ce4b8eba2a4c91a83e3d0133dbf,
+      type: 3}
+  - <Name>k__BackingField: Warrior_Phantom
+    <ID>k__BackingField: 9
+    <Sprite>k__BackingField: {fileID: 21300000, guid: c352b1550d6854142a0cefa4534e2d20,
+      type: 3}
+    <Unit>k__BackingField: {fileID: 9104803564683660833, guid: bb745090b0e5fdd4ea5759007b8c94fb,
+      type: 3}
+    <Hologram>k__BackingField: {fileID: 2611149553095981223, guid: add7e67fb68b0d54a9d9893bd0356223,
+      type: 3}

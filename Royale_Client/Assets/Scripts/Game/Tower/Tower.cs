@@ -1,8 +1,9 @@
+using Mirror;
 using System;
 using UnityEngine;
 
-[RequireComponent(typeof(Health))]
-public class Tower : MonoBehaviour, IHealth,IDestroyed
+[RequireComponent(typeof(Health), typeof(NetworkIdentity), typeof(NetworkTransformUnreliable))]
+public class Tower : NetworkBehaviour, IHealth,IDestroyed
 {
     public event Action Destroyed;
 

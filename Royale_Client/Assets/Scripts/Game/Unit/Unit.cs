@@ -1,11 +1,14 @@
+using Mirror;
 using System;
 using UnityEngine;
 
 [RequireComponent(typeof(UnitParameters), typeof(Health), typeof(UnitAnimation))]
-public class Unit : MonoBehaviour, IHealth, IDestroyed
+[RequireComponent(typeof(NetworkIdentity), typeof(NetworkTransformUnreliable))]
+public class Unit : NetworkBehaviour, IHealth, IDestroyed
 {
     public event Action Destroyed;
 
+    public MapInfo MapInfo { get; private set; }
     [field: SerializeField] public Health Health { get; private set; }
     [field: SerializeField] public bool IsEnemy { get; private set; } = false;
     [field: SerializeField] public UnitParameters Parameters;
@@ -19,8 +22,10 @@ public class Unit : MonoBehaviour, IHealth, IDestroyed
     private UnitState _attackState;
     private UnitState _currentState; 
 
-    public void Init(bool isEnemy)
-    {   
+    public void Init(bool isEnemy, MapInfo mapInfo)
+    {
+        MapInfo = mapInfo;
+
         IsEnemy = isEnemy;
 
         _animation.Init(this);
@@ -33,10 +38,12 @@ public class Unit : MonoBehaviour, IHealth, IDestroyed
         Health.UpdateHealth += CheckDestroy;
     }
 
+#if UNITY_SERVER
     private void Update()
     {
         _currentState.Run();
     }
+#endif
 
     private void CreateStates()
     {

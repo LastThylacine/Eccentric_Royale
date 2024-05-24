@@ -2,8 +2,6 @@
     require '../database.php';
     require '../System/configConstants.php';
 
-    $_POST = json_decode(file_get_contents('php://input'), true);
-    
     $key = $_POST['key'];
     $userID = $_POST['userID'];
 
